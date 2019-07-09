@@ -21,6 +21,12 @@ RUN echo "deb https://packages.atlassian.com/debian/atlassian-sdk-deb/ stable co
     && apt-get -y update \
     && apt-get -y install atlassian-plugin-sdk=${SDK_VERSION}
 
+# Do a mock-build to download most the deps... speeds up the real build afterwards
+COPY pom.xml /tmp/pom.xml
+RUN cd /tmp \
+    && atlas-mvn compile \
+    && rm /tmp/pom.xml
+
 RUN mkdir -p /app
 WORKDIR /app
 
