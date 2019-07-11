@@ -24,8 +24,9 @@ RUN echo "deb https://packages.atlassian.com/debian/atlassian-sdk-deb/ stable co
 # Do a mock-build to download most the deps... speeds up the real build afterwards
 COPY pom.xml /tmp/pom.xml
 RUN cd /tmp \
-    && atlas-mvn compile \
-    && rm /tmp/pom.xml
+    && atlas-mvn compile
+RUN atlas-mvn package || true
+RUN rm /tmp/pom.xml
 
 RUN mkdir -p /app
 WORKDIR /app
