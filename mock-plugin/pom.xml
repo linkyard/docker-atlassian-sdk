@@ -27,11 +27,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scalaVersion}</version>
-    </dependency>
-    <dependency>
       <groupId>com.atlassian.jira</groupId>
       <artifactId>jira-api</artifactId>
       <version>${jira.version}</version>
@@ -130,8 +125,6 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src/main/scala</sourceDirectory>
-    <testSourceDirectory>src/test/scala</testSourceDirectory>
     <extensions>
       <extension>
         <groupId>kr.motd.maven</groupId>
@@ -140,19 +133,6 @@
       </extension>
     </extensions>
     <plugins>
-      <plugin>
-        <groupId>net.alchim31.maven</groupId>
-        <artifactId>scala-maven-plugin</artifactId>
-        <version>4.0.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
         <artifactId>jira-maven-plugin</artifactId>
@@ -191,9 +171,6 @@
               org.eclipse.gemini.blueprint.*;resolution:="optional",
               com.atlassian.jira.plugin.triggers.api.*;resolution:="optional",
               com.atlassian.sal.api;resolution:="optional",
-              scala.*;resolution:="optional",
-              cats.*;resolution:="optional",
-              io.circe.*;resolution:="optional",
               org.typelevel.*;resolution:="optional",
               com.typesafe.*;resolution:="optional",
               sun.misc.*;resolution:="optional",
@@ -233,7 +210,6 @@
   </build>
 
   <properties>
-    <scalaVersion>3.3.1</scalaVersion>
     <jira.version>9.12.2</jira.version>
     <amps.version>8.10.1</amps.version>
     <plugin.testrunner.version>2.0.1</plugin.testrunner.version>
