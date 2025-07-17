@@ -1,8 +1,8 @@
-FROM eclipse-temurin:11-jdk-jammy
+FROM eclipse-temurin:17-jdk-jammy
 LABEL maintainer="mario.siegenthaler@linkyard.ch"
 
 # Add Tini
-ENV TINI_VERSION v0.19.0
+ENV TINI_VERSION=v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
@@ -11,15 +11,15 @@ ENTRYPOINT ["/tini", "--"]
 RUN apt-get -y update \
     && apt-get -y install apt-transport-https gnupg2
 
-ENV SDK_VERSION=8.2.8
+ENV SDK_VERSION=9.1.1
 
 # # Install atlassian sdk
-RUN echo "deb https://packages.atlassian.com/debian/atlassian-sdk-deb/ stable contrib" >>/etc/apt/sources.list
-RUN echo "deb https://packages.atlassian.com/debian/atlassian-sdk-deb/ stable contrib" >>/etc/apt/sources.list \
-    && curl https://packages.atlassian.com/api/gpg/key/public -o /tmp/public \
-    && apt-key add /tmp/public
-RUN apt-get -y update
-RUN apt-get -y install atlassian-plugin-sdk=${SDK_VERSION}
+RUN curl https://maven.artifacts.atlassian.com/com/atlassian/amps/atlassian-plugin-sdk/${SDK_VERSION}/atlassian-plugin-sdk-${SDK_VERSION}.tar.gz -o /tmp/atlassian-plugin-sdk.tar.gz && \
+    tar -xvzf /tmp/atlassian-plugin-sdk.tar.gz -C /opt && \
+    mv /opt/atlassian-plugin-sdk-${SDK_VERSION} /opt/atlassian-plugin-sdk && \
+    rm /tmp/atlassian-plugin-sdk.tar.gz
+
+ENV PATH="/opt/atlassian-plugin-sdk/bin:${PATH}"
 
 # Do a mock-build to download most the deps... speeds up the real build afterwards
 COPY mock-plugin /tmp/mock-plugin
